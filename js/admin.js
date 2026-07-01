@@ -201,29 +201,52 @@ var AdminApp = (function () {
     }
 
     sheet.querySelector('#sc-submit').addEventListener('click', function () {
-      var selectedType = (sheet.querySelector('#sc-type .chip.selected') || {}).dataset || {};
-      var cType = selectedType.type || 'Group';
-      var days  = Array.prototype.slice.call(sheet.querySelectorAll('#sc-days .chip.selected')).map(function (c) { return c.dataset.day; });
+      var typeChip = sheet.querySelector('#sc-type .chip.selected');
+      var cType = typeChip ? (typeChip.dataset.type || 'Group') : 'Group';
+      var days = Array.prototype.slice.call(sheet.querySelectorAll('#sc-days .chip.selected'))
+        .map(function (c) { return c.dataset.day; })
+        .filter(Boolean);
+
+      var errorBox = sheet.querySelector('#sc-error');
+
+      if (!days.length) {
+        errorBox.innerHTML = '<p class="error-text">Please select at least one day.</p>';
+        return;
+      }
+
       var payload = {
         branch:          sheet.querySelector('#sc-branch').value,
         classType:       cType,
         days:            days,
         time:            sheet.querySelector('#sc-time').value,
-        openHoursBefore: Number(sheet.querySelector('#sc-open').value),
-        closeMinsBefore: Number(sheet.querySelector('#sc-close').value)
+        openHoursBefore: Number(sheet.querySelector('#sc-open').value) || 24,
+        closeMinsBefore: Number(sheet.querySelector('#sc-close').value) || 30
       };
-      if (cType === 'Spin') {
-        payload.rows = 2;
-        payload.cols = 13;
-        payload.capacity = 24;
-      } else {
-        payload.rows = Number(sheet.querySelector('#sc-rows') ? sheet.querySelector('#sc-rows').value : 8);
-        payload.cols = Number(sheet.querySelector('#sc-cols') ? sheet.querySelector('#sc-cols').value : 8);
+
+      if (cType === 'Group') {
+        var rowsInput = sheet.querySelector('#sc-rows');
+        var colsInput = sheet.querySelector('#sc-cols');
+        var rows = rowsInput ? (parseInt(rowsInput.value, 10) || 8) : 8;
+        var cols = colsInput ? (parseInt(colsInput.value, 10) || 8) : 8;
+        if (rows < 1 || cols < 1) {
+          errorBox.innerHTML = '<p class="error-text">Rows and columns must be at least 1.</p>';
+          return;
+        }
+        payload.rows = rows;
+        payload.cols = cols;
       }
+
       if (isEdit) payload.scheduleId = schedule.scheduleId;
       var action = isEdit ? 'editSchedule' : 'createSchedule';
+      var btn = sheet.querySelector('#sc-submit');
+      btn.disabled = true; btn.textContent = isEdit ? 'Saving…' : 'Creating…';
+
       Api.call(action, payload).then(function (res) {
-        if (!res.success) { sheet.querySelector('#sc-error').innerHTML = '<p class="error-text">' + UI.escapeHtml(res.error) + '</p>'; return; }
+        btn.disabled = false; btn.textContent = isEdit ? 'Save Changes' : 'Create Schedule';
+        if (!res.success) {
+          errorBox.innerHTML = '<p class="error-text">' + UI.escapeHtml(res.error) + '</p>';
+          return;
+        }
         sheet.remove();
         UI.toast(isEdit ? 'Schedule updated.' : 'Schedule created.');
         loadSchedules();

@@ -436,10 +436,15 @@ tr:hover td{ background: var(--sky-50); }
 @media (min-width:600px){ .modal-backdrop{ align-items:center; } }
 
 .modal-sheet{
-  background: var(--white); width:100%; max-width: 480px; border-radius: 20px 20px 0 0;
-  padding: 22px; animation: slideUp .25s var(--ease);
+  background: var(--white); width:100%; max-width: 480px;
+  border-radius: 20px 20px 0 0;
+  padding: 22px;
+  max-height: 90vh;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  animation: slideUp .25s var(--ease);
 }
-@media (min-width:600px){ .modal-sheet{ border-radius: var(--radius-card); } }
+@media (min-width:600px){ .modal-sheet{ border-radius: var(--radius-card); max-height: 85vh; } }
 @keyframes slideUp{ from{ transform: translateY(40px); opacity:0;} to{ transform:none; opacity:1; } }
 
 .toast{
