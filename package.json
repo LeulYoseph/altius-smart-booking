@@ -1,0 +1,15 @@
+{
+  "name": "altius-booking-android",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Android packaging for the Altius Booking PWA, via Bubblewrap (Trusted Web Activity). The app is hosted on GitHub Pages at https://leulyoseph.github.io/altius-booking/, with Google Sheets/Apps Script as the backend.",
+  "scripts": {
+    "android:init": "bubblewrap init --manifest=https://leulyoseph.github.io/altius-booking/manifest.json",
+    "build:android:apk": "bubblewrap build",
+    "build:android:aab": "bubblewrap build --skipPwaValidation",
+    "android:update": "bubblewrap update"
+  },
+  "devDependencies": {
+    "@bubblewrap/cli": "^1.24.1"
+  }
+}

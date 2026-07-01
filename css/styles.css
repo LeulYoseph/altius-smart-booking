@@ -1,0 +1,464 @@
+/* =============================================================================
+   Altius Booking System — Stylesheet
+   Design direction: mobile-first gym booking app.
+   Tokens chosen within the brief's required palette (sky blue / light yellow
+   / white / dark gray): a clear "court" blue with a warm, sunny accent used
+   sparingly for the seat-selection moment, which is this app's signature
+   interaction (the seat grid is the hero of the booking flow).
+   ============================================================================= */
+
+:root{
+  /* --- Color tokens (sampled directly from the Altius Gym logo) --- */
+  --sky-50:  #E9F1FB;
+  --sky-100: #D2E3F8;
+  --sky-300: #6FA0E0;
+  --sky-500: #004AB0;   /* primary - logo royal blue */
+  --sky-600: #003D91;
+  --sky-700: #002C6B;
+
+  --sun-100: #FFF6CF;
+  --sun-300: #FCE873;
+  --sun-500: #FCD706;   /* accent - logo gold */
+  --sun-600: #E0BD00;
+
+  --navy:      #001B49; /* logo background navy - used for hero surfaces & brand chrome */
+  --navy-soft: #0E2C61;
+
+  --white: #FFFFFF;
+  --gray-50: #F7F9FB;
+  --gray-100: #EEF1F4;
+  --gray-300: #D7DCE2;
+  --gray-500: #8B95A1;
+  --gray-700: #4B5563;
+  --ink: #232A33;        /* dark gray text */
+
+  --booked: #C9CDD3;
+  --danger: #E15555;
+  --success: #2FAE6B;
+
+  /* --- Type --- */
+  --font-display: 'Outfit', 'Poppins', system-ui, sans-serif;
+  --font-body: 'Inter', system-ui, -apple-system, sans-serif;
+
+  /* --- Shape & shadow --- */
+  --radius-card: 18px;
+  --radius-btn: 12px;
+  --radius-pill: 999px;
+  --shadow-soft: 0 6px 20px rgba(35, 42, 51, 0.07);
+  --shadow-lift: 0 10px 28px rgba(47, 160, 222, 0.18);
+
+  --ease: cubic-bezier(.2,.8,.2,1);
+}
+
+*{ box-sizing: border-box; }
+html, body{ margin:0; padding:0; }
+
+body{
+  font-family: var(--font-body);
+  color: var(--ink);
+  background: var(--gray-50);
+  -webkit-font-smoothing: antialiased;
+  overscroll-behavior-y: contain;
+}
+
+h1,h2,h3,h4{
+  font-family: var(--font-display);
+  margin: 0 0 4px 0;
+  letter-spacing: -0.01em;
+}
+
+p{ margin: 0 0 8px 0; color: var(--gray-700); }
+
+a{ color: var(--sky-600); text-decoration: none; }
+
+button{
+  font-family: var(--font-body);
+  cursor: pointer;
+  border: none;
+  background: none;
+}
+
+input, select{
+  font-family: var(--font-body);
+  font-size: 15px;
+}
+
+/* Visible keyboard focus everywhere, per accessibility floor */
+:focus-visible{
+  outline: 3px solid var(--sky-300);
+  outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce){
+  *{ animation-duration: 0.001ms !important; transition-duration: 0.001ms !important; }
+}
+
+/* =============================================================================
+   App shell
+   ============================================================================= */
+
+#app{
+  max-width: 480px;
+  margin: 0 auto;
+  min-height: 100vh;
+  background: var(--gray-50);
+  display: flex;
+  flex-direction: column;
+  position: relative;
+}
+
+@media (min-width: 600px){
+  #app{
+    max-width: 920px;
+  }
+}
+
+.topbar{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding: 16px 20px;
+  background: var(--white);
+  border-bottom: 1px solid var(--gray-100);
+  position: sticky;
+  top: 0;
+  z-index: 20;
+}
+
+.topbar .brand{
+  display:flex; align-items:center; gap:10px;
+}
+
+.topbar .brand-mark{
+  width:34px; height:34px; border-radius: 10px;
+  background: var(--navy);
+  display:flex; align-items:center; justify-content:center;
+  overflow: hidden;
+  box-shadow: var(--shadow-lift);
+}
+.brand-mark img{ width:100%; height:100%; object-fit: cover; display:block; }
+
+.topbar h1{ font-size: 17px; }
+.topbar .role-tag{
+  font-size: 11px; color: var(--sky-600); background: var(--sky-50);
+  padding: 3px 9px; border-radius: var(--radius-pill); font-weight:600;
+}
+
+.icon-btn{
+  width:38px; height:38px; border-radius: var(--radius-pill);
+  display:flex; align-items:center; justify-content:center;
+  background: var(--gray-100); color: var(--ink); font-size: 16px;
+  transition: background .2s var(--ease);
+}
+.icon-btn:active{ background: var(--gray-300); }
+
+main{
+  flex: 1;
+  padding: 16px 16px 90px 16px; /* room for bottom nav */
+  animation: fadeIn .25s var(--ease);
+}
+
+@keyframes fadeIn{ from{opacity:0; transform: translateY(6px);} to{opacity:1; transform:none;} }
+
+.offline-banner{
+  background: var(--sun-100); color:#7A5A00; font-size: 13px; font-weight:600;
+  text-align:center; padding: 8px; display:none;
+}
+.offline-banner.show{ display:block; }
+
+/* =============================================================================
+   Cards
+   ============================================================================= */
+
+.card{
+  background: var(--white);
+  border-radius: var(--radius-card);
+  padding: 18px;
+  box-shadow: var(--shadow-soft);
+  margin-bottom: 14px;
+}
+
+.card-row{ display:flex; align-items:center; justify-content:space-between; gap:10px; }
+
+.section-title{
+  font-size: 13px; font-weight:700; text-transform:uppercase; letter-spacing:.06em;
+  color: var(--gray-500); margin: 18px 4px 10px 4px;
+}
+
+.stat-grid{
+  display:grid; grid-template-columns: repeat(2, 1fr); gap: 12px;
+}
+.stat-card{
+  background: var(--white); border-radius: var(--radius-card);
+  padding: 16px; box-shadow: var(--shadow-soft);
+}
+.stat-card .stat-value{
+  font-family: var(--font-display); font-size: 26px; font-weight:700; color: var(--sky-600);
+}
+.stat-card .stat-label{ font-size: 12px; color: var(--gray-500); }
+
+/* =============================================================================
+   Buttons
+   ============================================================================= */
+
+.btn{
+  display:inline-flex; align-items:center; justify-content:center; gap:8px;
+  padding: 13px 20px; border-radius: var(--radius-btn);
+  font-weight: 600; font-size: 15px;
+  transition: transform .12s var(--ease), box-shadow .2s var(--ease), background .2s var(--ease);
+  width: 100%;
+}
+.btn:active{ transform: scale(.97); }
+
+.btn-primary{ background: var(--sky-500); color: var(--white); box-shadow: var(--shadow-lift); }
+.btn-primary:hover{ background: var(--sky-600); }
+.btn-primary:disabled{ background: var(--gray-300); color: var(--gray-500); box-shadow:none; cursor:not-allowed; }
+
+.btn-accent{ background: var(--sun-500); color: #5B4300; }
+.btn-accent:hover{ background: var(--sun-600); }
+
+.btn-ghost{ background: var(--gray-100); color: var(--ink); }
+.btn-ghost:hover{ background: var(--gray-300); }
+
+.btn-danger{ background: #FCE9E9; color: var(--danger); }
+.btn-danger:hover{ background: #F8D6D6; }
+
+.btn-sm{ padding: 8px 14px; font-size: 13px; width: auto; }
+
+.btn-row{ display:flex; gap:10px; }
+.btn-row .btn{ flex:1; }
+
+/* =============================================================================
+   Forms
+   ============================================================================= */
+
+.field{ margin-bottom: 14px; }
+.field label{
+  display:block; font-size: 12px; font-weight:600; color: var(--gray-700);
+  margin-bottom: 6px;
+}
+.field input, .field select{
+  width: 100%; padding: 12px 14px; border-radius: var(--radius-btn);
+  border: 1.5px solid var(--gray-300); background: var(--white); color: var(--ink);
+  transition: border-color .15s var(--ease);
+}
+.field input:focus, .field select:focus{ border-color: var(--sky-500); }
+
+.password-wrap{ position: relative; }
+.password-wrap input{ padding-right: 44px; }
+.pw-toggle{
+  position: absolute; right: 6px; top: 50%; transform: translateY(-50%);
+  width: 32px; height: 32px; border-radius: 8px;
+  display:flex; align-items:center; justify-content:center;
+  color: var(--gray-500); background: transparent;
+  transition: background .15s var(--ease), color .15s var(--ease);
+}
+.pw-toggle:hover{ background: var(--gray-100); color: var(--sky-600); }
+
+.chip-group{ display:flex; flex-wrap:wrap; gap:8px; }
+.chip{
+  padding: 8px 14px; border-radius: var(--radius-pill); border: 1.5px solid var(--gray-300);
+  font-size: 13px; font-weight:600; color: var(--gray-700); background: var(--white);
+}
+.chip.selected{ background: var(--sky-500); border-color: var(--sky-500); color: var(--white); }
+
+.error-text{ color: var(--danger); font-size: 13px; font-weight:600; margin-top: 6px; }
+.helper-text{ color: var(--gray-500); font-size: 12px; margin-top: 6px; }
+
+/* =============================================================================
+   Login screen
+   ============================================================================= */
+
+.login-screen{
+  min-height: 100vh; display:flex; flex-direction:column; justify-content:center;
+  padding: 28px; background: linear-gradient(165deg, var(--navy) 0%, var(--sky-600) 60%, var(--gray-50) 100%);
+}
+.login-hero{ text-align:center; margin-bottom: 28px; }
+.login-hero .brand-mark{ width:96px; height:96px; margin: 0 auto 14px auto; border-radius: 22px; box-shadow: 0 12px 30px rgba(0,27,73,.35); }
+.login-hero h1{ font-size: 24px; color: var(--white); }
+.login-hero p{ font-size: 14px; color: rgba(255,255,255,.85); }
+
+.login-tabs{ display:flex; gap:6px; background: rgba(255,255,255,.16); padding: 4px; border-radius: var(--radius-pill); margin-bottom: 20px; }
+.login-tab{ flex:1; text-align:center; padding: 9px 0; border-radius: var(--radius-pill); font-size:13px; font-weight:700; color: rgba(255,255,255,.85); }
+.login-tab.active{ background: var(--white); color: var(--sky-600); box-shadow: var(--shadow-soft); }
+
+/* =============================================================================
+   Bottom navigation (members)
+   ============================================================================= */
+
+.bottom-nav{
+  position: fixed; bottom: 0; left: 50%; transform: translateX(-50%);
+  width: 100%; max-width: 480px;
+  background: var(--white); border-top: 1px solid var(--gray-100);
+  display:flex; justify-content: space-around; padding: 8px 6px calc(8px + env(safe-area-inset-bottom));
+  box-shadow: 0 -6px 18px rgba(35,42,51,.06);
+  z-index: 30;
+}
+@media (min-width:600px){ .bottom-nav{ max-width: 920px; } }
+
+.nav-item{
+  display:flex; flex-direction:column; align-items:center; gap:3px;
+  padding: 6px 14px; border-radius: 14px; color: var(--gray-500); font-size: 11px; font-weight:600;
+  transition: color .2s var(--ease);
+}
+.nav-item .nav-icon{ font-size: 19px; }
+.nav-item.active{ color: var(--sky-600); background: var(--sky-50); }
+
+/* =============================================================================
+   Class list
+   ============================================================================= */
+
+.class-card{
+  display:flex; align-items:center; gap:14px; cursor:pointer;
+  transition: transform .15s var(--ease);
+}
+.class-card:active{ transform: scale(.985); }
+
+.class-date-badge{
+  width: 54px; height: 54px; border-radius: 14px; flex-shrink:0;
+  background: var(--sky-50); color: var(--sky-700);
+  display:flex; flex-direction:column; align-items:center; justify-content:center;
+  font-family: var(--font-display);
+}
+.class-date-badge .day{ font-size: 18px; font-weight:700; line-height:1; }
+.class-date-badge .mon{ font-size: 10px; text-transform:uppercase; font-weight:600; }
+
+.class-info{ flex:1; }
+.class-info .class-time{ font-weight:700; font-size: 15px; }
+.class-info .class-meta{ font-size: 12.5px; color: var(--gray-500); }
+
+.badge{
+  font-size: 11px; font-weight:700; padding: 4px 9px; border-radius: var(--radius-pill);
+}
+.badge-open{ background: #E6F7ED; color: var(--success); }
+.badge-soon{ background: var(--sun-100); color: #8A6A00; }
+.badge-closed{ background: var(--gray-100); color: var(--gray-500); }
+
+/* =============================================================================
+   Seat map (signature element)
+   ============================================================================= */
+
+.seat-map-wrap{
+  background: var(--white); border-radius: var(--radius-card); padding: 18px;
+  box-shadow: var(--shadow-soft);
+}
+
+.seat-map-stage{
+  text-align:center; font-size: 11px; font-weight:700; letter-spacing:.12em;
+  color: var(--sky-600); background: var(--sky-50); border-radius: var(--radius-pill);
+  padding: 8px 0; margin-bottom: 16px;
+}
+
+.seat-grid{
+  display: grid;
+  gap: 7px;
+  justify-content: center;
+}
+
+.seat{
+  width: 30px; height: 30px; border-radius: 8px; font-size: 10px; font-weight:700;
+  display:flex; align-items:center; justify-content:center;
+  border: 1.5px solid var(--sky-300); background: var(--sky-50); color: var(--sky-700);
+  transition: transform .12s var(--ease), background .15s var(--ease), box-shadow .15s var(--ease);
+}
+.seat.available:hover{ transform: translateY(-2px); }
+.seat.booked{
+  background: var(--booked); border-color: var(--booked); color: var(--white); cursor:not-allowed;
+}
+.seat.yours{
+  background: var(--sky-600); border-color: var(--sky-600); color: var(--white);
+}
+.seat.selected{
+  background: var(--sun-500); border-color: var(--sun-600); color: #5B4300;
+  box-shadow: 0 0 0 4px var(--sun-100);
+  animation: pulseSelect .5s var(--ease);
+}
+@keyframes pulseSelect{ 0%{ transform: scale(.85);} 60%{ transform: scale(1.08);} 100%{ transform: scale(1);} }
+
+/* Spin class bike grid */
+.spin-grid{ display:flex; flex-direction:column; gap:10px; align-items:center; }
+.spin-row{ display:flex; gap:7px; justify-content:center; }
+.spin-seat{
+  width: 34px; height: 34px; border-radius: 50%;
+  font-size: 11px; font-weight: 700;
+  display:flex; align-items:center; justify-content:center;
+  border: 2px solid var(--sky-300); background: var(--sky-50); color: var(--sky-700);
+  transition: transform .12s var(--ease), background .15s var(--ease), box-shadow .15s var(--ease);
+}
+
+.seat-legend{ display:flex; gap:14px; justify-content:center; margin-top: 16px; flex-wrap:wrap; }
+.legend-item{ display:flex; align-items:center; gap:6px; font-size: 11.5px; color: var(--gray-700); }
+.legend-dot{ width: 12px; height:12px; border-radius: 4px; }
+
+/* =============================================================================
+   Booking confirmation "ticket"
+   ============================================================================= */
+
+.ticket{
+  background: linear-gradient(135deg, var(--navy), var(--sky-500));
+  color: var(--white); border-radius: var(--radius-card); padding: 22px;
+  position: relative; overflow:hidden;
+}
+.ticket::after{
+  content:''; position:absolute; right:-30px; top:-30px; width:120px; height:120px;
+  background: rgba(255,255,255,.08); border-radius: 50%;
+}
+.ticket .ticket-label{ font-size:11px; letter-spacing:.1em; text-transform:uppercase; opacity:.85; }
+.ticket .ticket-seat{ font-family: var(--font-display); font-size: 38px; font-weight:700; margin: 6px 0; }
+.ticket-grid{ display:grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 14px; }
+.ticket-grid div span{ display:block; font-size:11px; opacity:.8; }
+.ticket-grid div b{ font-size: 14px; }
+
+/* =============================================================================
+   Tables (admin/reception data views)
+   ============================================================================= */
+
+.table-wrap{ overflow-x: auto; border-radius: var(--radius-card); background: var(--white); box-shadow: var(--shadow-soft); }
+table{ width:100%; border-collapse: collapse; font-size: 13px; min-width: 560px; }
+th{ text-align:left; padding: 12px 14px; background: var(--gray-50); color: var(--gray-500); font-weight:700; font-size:11px; text-transform:uppercase; }
+td{ padding: 11px 14px; border-top: 1px solid var(--gray-100); }
+tr:hover td{ background: var(--sky-50); }
+
+.status-pill{ font-size: 11px; font-weight:700; padding: 3px 9px; border-radius: var(--radius-pill); }
+.status-Active{ background:#E6F7ED; color: var(--success); }
+.status-Inactive{ background:#FCE9E9; color: var(--danger); }
+.status-Confirmed{ background:#E6F7ED; color: var(--success); }
+.status-Cancelled{ background: var(--gray-100); color: var(--gray-500); }
+
+/* =============================================================================
+   Modal / toast
+   ============================================================================= */
+
+.modal-backdrop{
+  position: fixed; inset:0; background: rgba(35,42,51,.45); z-index: 100;
+  display:flex; align-items:flex-end; justify-content:center;
+}
+@media (min-width:600px){ .modal-backdrop{ align-items:center; } }
+
+.modal-sheet{
+  background: var(--white); width:100%; max-width: 480px; border-radius: 20px 20px 0 0;
+  padding: 22px; animation: slideUp .25s var(--ease);
+}
+@media (min-width:600px){ .modal-sheet{ border-radius: var(--radius-card); } }
+@keyframes slideUp{ from{ transform: translateY(40px); opacity:0;} to{ transform:none; opacity:1; } }
+
+.toast{
+  position: fixed; bottom: 100px; left:50%; transform: translateX(-50%);
+  background: var(--ink); color: var(--white); padding: 12px 18px; border-radius: var(--radius-pill);
+  font-size: 13px; font-weight:600; box-shadow: var(--shadow-soft); z-index: 200;
+  animation: toastIn .25s var(--ease);
+}
+@keyframes toastIn{ from{opacity:0; transform: translate(-50%, 10px);} to{opacity:1; transform: translate(-50%,0);} }
+
+.empty-state{ text-align:center; padding: 40px 16px; color: var(--gray-500); }
+.empty-state .empty-icon{ font-size: 34px; margin-bottom:10px; }
+
+.spinner{
+  width:22px; height:22px; border-radius:50%; border: 3px solid var(--sky-100);
+  border-top-color: var(--sky-500); animation: spin .7s linear infinite; margin: 0 auto;
+}
+@keyframes spin{ to{ transform: rotate(360deg); } }
+
+.search-bar{ position:relative; margin-bottom: 14px; }
+.search-bar input{ padding-left: 38px; }
+.search-bar .search-icon{ position:absolute; left:13px; top:50%; transform: translateY(-50%); color: var(--gray-500); }
