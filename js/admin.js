@@ -212,7 +212,11 @@ var AdminApp = (function () {
         openHoursBefore: Number(sheet.querySelector('#sc-open').value),
         closeMinsBefore: Number(sheet.querySelector('#sc-close').value)
       };
-      if (cType === 'Group') {
+      if (cType === 'Spin') {
+        payload.rows = 2;
+        payload.cols = 13;
+        payload.capacity = 24;
+      } else {
         payload.rows = Number(sheet.querySelector('#sc-rows') ? sheet.querySelector('#sc-rows').value : 8);
         payload.cols = Number(sheet.querySelector('#sc-cols') ? sheet.querySelector('#sc-cols').value : 8);
       }
