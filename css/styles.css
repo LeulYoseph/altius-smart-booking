@@ -377,7 +377,15 @@ main{
 
 /* Spin class bike grid */
 .spin-grid{ display:flex; flex-direction:column; gap:10px; align-items:center; }
-.spin-row{ display:flex; gap:6px; justify-content:center; }
+.spin-row{
+  display: flex;
+  gap: 6px;
+  justify-content: center;
+  flex-wrap: nowrap;
+  overflow-x: auto;
+  padding: 0 18px;
+  box-sizing: border-box;
+}
 .spin-seat{
   width: 30px; height: 30px; border-radius: 50%;
   font-size: 10px; font-weight: 700;
