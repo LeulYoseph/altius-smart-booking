@@ -71,17 +71,20 @@ var SeatMap = (function () {
    */
   function renderSpinGrid(seats) {
     // 11 front (bikes 1-11) + 13 back (bikes 12-24)
-    var row1 = seats.slice(0, 11);  // front row
-    var row2 = seats.slice(11, 24); // back row
+    // Each row is displayed RIGHT-TO-LEFT: far right = lowest number
+    // Front row displayed: 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1
+    // Back row displayed:  24, 23, 22, 21, 20, 19, 18, 17, 16, 15, 14, 13, 12
+    var row1 = seats.slice(0, 11).slice().reverse();
+    var row2 = seats.slice(11, 24).slice().reverse();
     function renderRow(rowSeats) {
       return rowSeats.map(function (s) {
         return '<div class="seat spin-seat ' + s.state + '" data-seat="' + s.seat + '" title="Bike ' + s.seat + '">' + s.seat + '</div>';
       }).join('');
     }
     return '<div class="spin-grid">' +
-      '<p class="helper-text" style="text-align:center;margin-bottom:6px;font-size:11px;font-weight:700;letter-spacing:.08em;">FRONT ROW (11 bikes)</p>' +
+      '<p class="helper-text" style="text-align:center;margin-bottom:6px;font-size:11px;font-weight:700;letter-spacing:.08em;">FRONT ROW — 11 bikes (right=1, left=11)</p>' +
       '<div class="spin-row">' + renderRow(row1) + '</div>' +
-      '<p class="helper-text" style="text-align:center;margin:8px 0 6px;font-size:11px;font-weight:700;letter-spacing:.08em;">BACK ROW (13 bikes)</p>' +
+      '<p class="helper-text" style="text-align:center;margin:8px 0 6px;font-size:11px;font-weight:700;letter-spacing:.08em;">BACK ROW — 13 bikes (right=12, left=24)</p>' +
       '<div class="spin-row">' + renderRow(row2) + '</div>' +
     '</div>';
   }
