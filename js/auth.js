@@ -41,7 +41,7 @@ var Auth = (function () {
         '<div class="card">' +
           '<div class="field">' +
             '<label>Gym ID, phone number, or full name</label>' +
-            '<input id="member-identifier" type="text" placeholder="e.g. SAG001, 0911000002, or Helen Bekele" autocomplete="username">' +
+            '<input id="member-identifier" type="text" placeholder="e.g. SAG 001, 0911000002, or Helen Bekele" autocomplete="username">' +
           '</div>' +
           '<div class="field">' +
             '<label>Password</label>' +
