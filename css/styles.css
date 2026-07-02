@@ -379,7 +379,7 @@ main{
 .spin-grid{ display:flex; flex-direction:column; gap:10px; align-items:center; }
 .spin-row{ display:flex; gap:6px; justify-content:center; }
 .spin-seat{
-  width: 38px; height: 38px; border-radius: 50%;
+  width: 30px; height: 30px; border-radius: 50%;
   font-size: 10px; font-weight: 700;
   display:flex; align-items:center; justify-content:center;
   border: 2px solid var(--sky-300); background: var(--sky-50); color: var(--sky-700);
