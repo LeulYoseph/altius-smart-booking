@@ -348,7 +348,7 @@ var AdminApp = (function () {
       '<h3>Register Member</h3>' +
       '<div class="field"><label>Full Name</label><input id="rm-name"></div>' +
       '<div class="field"><label>Phone Number</label><input id="rm-phone" type="tel"></div>' +
-      '<div class="field"><label>Gym ID (optional — their physical membership card number)</label><input id="rm-gymid" placeholder="e.g. GYM001"></div>' +
+      '<div class="field"><label>Gym ID (optional — their physical membership card number)</label><input id="rm-gymid" placeholder="e.g. SAG001"></div>' +
       '<div class="field"><label>Branch</label><select id="rm-branch">' +
         branches.map(function (b) { return '<option value="' + b + '">' + b + '</option>'; }).join('') +
       '</select></div>' +
@@ -381,7 +381,7 @@ var AdminApp = (function () {
       '<h3>Edit Member</h3>' +
       '<div class="field"><label>Full Name</label><input id="em-name" value="' + UI.escapeHtml(member.fullName) + '"></div>' +
       '<div class="field"><label>Phone Number</label><input id="em-phone" value="' + UI.escapeHtml(member.phone) + '"></div>' +
-      '<div class="field"><label>Gym ID</label><input id="em-gymid" value="' + UI.escapeHtml(member.gymId || '') + '" placeholder="e.g. GYM001"></div>' +
+      '<div class="field"><label>Gym ID</label><input id="em-gymid" value="' + UI.escapeHtml(member.gymId || '') + '" placeholder="e.g. SAG001"></div>' +
       '<div class="field"><label>Branch</label><select id="em-branch">' +
         branches.map(function (b) { return '<option value="' + b + '" ' + (b === member.branch ? 'selected' : '') + '>' + b + '</option>'; }).join('') +
       '</select></div>' +
